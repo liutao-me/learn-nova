@@ -37,7 +37,7 @@ class VisitorController extends Controller
     {
         $validatedData = $request->validate([
         'name' => 'required|string',
-        'email' => 'required|email|unique:leads,email',
+        'email' => 'required|email|unique:visitors,email',
         ]);
 
         $visitor = new Visitor;
