@@ -3,20 +3,20 @@
 namespace App\Nova;
 
 use Laravel\Nova\Fields\ID;
-use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Gravatar;
-use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\HasMany;
+use Illuminate\Http\Request;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
-class User extends Resource
+class Visitor extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = 'App\\User';
+    public static $model = 'App\Visitor';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -31,7 +31,9 @@ class User extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name', 'email',
+        'id',
+        'name',
+        'email'
     ];
 
     /**
@@ -45,24 +47,25 @@ class User extends Resource
         return [
             ID::make()->sortable(),
 
-            Gravatar::make(),
+            Text::make('Name')->sortable(),
 
-            Text::make('Name')
+            Select::make('Status')
+                ->options(\App\Visitor::getStatuses())
                 ->sortable()
-                ->rules('required', 'max:255'),
+                ->rules('required', 'string'),
+
+            Select::make('Type')
+                ->options(\App\Visitor::getTypes())
+                ->sortable()
+                ->rules('required', 'string'),
 
             Text::make('Email')
                 ->sortable()
-                ->rules('required', 'email', 'max:254')
-                ->creationRules('unique:users,email')
-                ->updateRules('unique:users,email,{{resourceId}}'),
+                ->rules('required', 'email')
+                ->creationRules('unique:visitors,email')
+                ->updateRules('unique:visitors,email,{{resourceId}}'),
 
-            Password::make('Password')
-                ->onlyOnForms()
-                ->creationRules('required', 'string', 'min:6')
-                ->updateRules('nullable', 'string', 'min:6'),
-
-            HasMany::make('Notes')
+            HasMany::make('Notes'),
         ];
     }
 

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Actionable;
 
 class Note extends Model
 {
@@ -18,11 +19,11 @@ class Note extends Model
 
     public function visitor()
     {
-        return $this->belongsTo('App\visitor');
+        return $this->belongsTo('App\Visitor');
     }
 
     // 获取优先级
-    public static function getPriority()
+    public static function getPriorities()
     {
         return [
             self::LOW_PRIORITY => self::LOW_PRIORITY,
