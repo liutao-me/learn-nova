@@ -77,7 +77,11 @@ class Visitor extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+        return [
+            (new Metrics\VisitorsPerDay)->width('1/3'),
+            (new Metrics\NewVisitors)->width('1/3'),
+            (new Metrics\VisitorsPerStatus)->width('1/3'),
+        ];
     }
 
     /**
