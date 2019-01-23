@@ -92,7 +92,10 @@ class Visitor extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return [
+            new Filters\VisitorStatus,
+            new Filters\VisitorType,
+        ];
     }
 
     /**
