@@ -35,7 +35,22 @@ class VisitorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+        'name' => 'required|string',
+        'email' => 'required|email|unique:leads,email',
+        ]);
+
+        $visitor = new Visitor;
+
+        $visitor->name = $validatedData['name'];
+        $visitor->email = $validatedData['email'];
+        $visitor->type = Visitor::ORGANIC_TYPE;
+        $visitor->status = Visitor::PROSPECT_STATUS;
+
+        $visitor->save();
+
+        return redirect()->back()
+            ->with('form-success', 'Thank you for your submission!');
     }
 
     /**
