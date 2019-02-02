@@ -32,4 +32,13 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Note');
     }
+
+    public function isAdmin()
+    {
+        $admin_emails = [
+            'rennesusher@gmail.com',
+        ];
+
+        return in_array($this->email, $admin_emails);
+    }
 }
